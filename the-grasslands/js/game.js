@@ -20,7 +20,11 @@ var BootScene = new Phaser.Class({
         this.load.tilemapTiledJSON('map', 'assets/map/map.json');
         
         // our two characters
-        this.load.spritesheet('player', 'assets/sprites/knight.png', { frameWidth: 16, frameHeight: 18 });
+        this.load.spritesheet('player', 'assets/sprites/sprite.png', { frameWidth: 16, frameHeight: 16 });
+
+	this.load.audio('music', [
+            'assets/audio/overworld.ogg'
+	]);
     },
 
     create: function ()
@@ -43,12 +47,16 @@ var WorldScene = new Phaser.Class({
 
     preload: function ()
     {
-        
+
     },
 
     create: function ()
     {
-        // create the map
+	// play music
+        var music = this.sound.add('music', {loop: true});
+	music.play();
+
+	// create the map
         var map = this.make.tilemap({ key: 'map' });
         
         // first parameter is the name of the tilemap in tiled
@@ -70,14 +78,14 @@ var WorldScene = new Phaser.Class({
             repeat: -1
         });
         this.anims.create({
-            key: 'right',
+            key: 'down',
             frames: this.anims.generateFrameNumbers('player', 
 						    {frames: [3, 4, 5]}),
             frameRate: 10,
             repeat: -1
         });
         this.anims.create({
-            key: 'down',
+            key: 'right',
             frames: this.anims.generateFrameNumbers('player', 
 						    {frames: [6, 7, 8]}),
             frameRate: 10,
@@ -92,7 +100,7 @@ var WorldScene = new Phaser.Class({
         });
 
         // our player sprite created through the phycis system
-        this.player = this.physics.add.sprite(384, 672, 'player', 6);
+        this.player = this.physics.add.sprite(48, 160, 'player', 6);
         
         // don't go out of the map
         this.physics.world.bounds.width = map.widthInPixels;
@@ -189,6 +197,9 @@ var config = {
     height: 240,
     zoom: 2,
     pixelArt: true,
+    audio: {
+	disableWebAudio: true
+    },
     physics: {
         default: 'arcade',
         arcade: {
