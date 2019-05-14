@@ -19,12 +19,18 @@ var BootScene = new Phaser.Class({
         // map in json format
         this.load.tilemapTiledJSON('map', 'assets/map/map.json');
         
-        // our two characters
-        this.load.spritesheet('player', 'assets/sprites/sprite.png', { frameWidth: 16, frameHeight: 16 });
+        // our main characters
+        this.load.spritesheet('player', 
+                              'assets/sprites/sprite.png',
+                              {frameWidth: 16, frameHeight: 16});
 
 	this.load.audio('music', [
             'assets/audio/overworld.ogg'
 	]);
+
+        this.load.spritesheet('enemy',
+                              'assets/sprites/roguelikecreatures.png',
+                              {frameWidth: 16, frameHeight: 16})
     },
 
     create: function ()
@@ -117,14 +123,26 @@ var WorldScene = new Phaser.Class({
     
         // user input
         this.cursors = this.input.keyboard.createCursorKeys();
-        
+
+        enemy_indexes = [0, 1, 2, 3, 4, 5, 6,
+                         8, 9, 10, 11, 12, 13,
+                         16, 17, 18, 19, 20, 21,
+                         24, 25, 26,
+                         32, 33, 34, 35, 36, 37, 38, 39,
+                         40, 41, 42, 43, 44, 45, 46, 47,
+                         48, 49, 50, 51, 52, 53, 54,
+                         56, 57, 58, 59, 60, 61, 62, 63,
+                         64, 65, 66, 67, 68, 69, 70]
         // where the enemies will be
-        this.spawns = this.physics.add.group({ classType: Phaser.GameObjects.Zone });
-        for(var i = 0; i < 30; i++) {
+        this.spawns = this.physics.add.group({ classType: Phaser.GameObjects.Sprite });
+        for(var i = 0; i < 100; i++) {
             var x = Phaser.Math.RND.between(0, this.physics.world.bounds.width);
             var y = Phaser.Math.RND.between(0, this.physics.world.bounds.height);
-            // parameters are x, y, width, height
-            this.spawns.create(x, y, 20, 20);            
+            index = enemy_indexes[Math.floor(Math.random() *
+                                             enemy_indexes.length)]
+            this.spawns.create(x, y, 'enemy', index);
+            // Debugging
+            //this.add.text(x, y, index);
         }        
         // add collider
         this.physics.add.overlap(this.player, this.spawns, this.onMeetEnemy, false, this);
