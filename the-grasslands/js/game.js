@@ -135,15 +135,11 @@ var WorldScene = new Phaser.Class({
                          64, 65, 66, 67, 68, 69, 70]
         // where the enemies will be
         this.spawns = this.physics.add.group({ classType: Phaser.GameObjects.Sprite });
-        for(var i = 0; i < 100; i++) {
-            var x = Phaser.Math.RND.between(0, this.physics.world.bounds.width);
-            var y = Phaser.Math.RND.between(0, this.physics.world.bounds.height);
-            index = enemy_indexes[Math.floor(Math.random() *
-                                             enemy_indexes.length)]
-            this.spawns.create(x, y, 'enemy', index);
-            // Debugging
-            //this.add.text(x, y, index);
-        }        
+        this.badguy = this.spawns.create(224, 16, 'enemy', 1)
+        this.badguy.maxY = 80
+        this.badguy.minY = 16
+        this.badguy.speed = 1
+
         // add collider
         this.physics.add.overlap(this.player, this.spawns, this.onMeetEnemy, false, this);
     },
@@ -204,8 +200,15 @@ var WorldScene = new Phaser.Class({
         {
             this.player.anims.stop();
         }
+
+        // enemy movement
+        if (this.badguy.y > this.badguy.maxY ||
+            this.badguy.y < this.badguy.minY) {
+            this.badguy.speed *= -1
+        }
+        this.badguy.y += this.badguy.speed
     }
-    
+
 });
 
 var config = {
