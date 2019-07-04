@@ -135,11 +135,26 @@ var WorldScene = new Phaser.Class({
                          64, 65, 66, 67, 68, 69, 70]
         // where the enemies will be
         this.spawns = this.physics.add.group({ classType: Phaser.GameObjects.Sprite });
-        this.badguy = this.spawns.create(224, 16, 'enemy', 1)
-        this.badguy.maxY = 80
-        this.badguy.minY = 16
-        this.badguy.speed = 1
+        this.badguy1 = this.spawns.create(224, 16, 'enemy', 1)
+        this.badguy1.maxY = 80
+        this.badguy1.minY = 16
+        this.badguy1.speed = 1
 
+        this.badguy2 = this.spawns.create(112, 416, 'enemy', 2)
+        this.badguy2.maxY = 464
+        this.badguy2.minY = 416
+        this.badguy2.speed = 1
+
+        this.badguy3 = this.spawns.create(224, 16, 'enemy', 1)
+        this.badguy3.maxY = 80
+        this.badguy3.minY = 16
+        this.badguy3.speed = 1
+	
+        this.badguy4 = this.spawns.create(224, 16, 'enemy', 1)
+        this.badguy4.maxY = 80
+        this.badguy4.minY = 16
+        this.badguy4.speed = 1
+	
         // add collider
         this.physics.add.overlap(this.player, this.spawns, this.onMeetEnemy, false, this);
     },
@@ -202,11 +217,17 @@ var WorldScene = new Phaser.Class({
         }
 
         // enemy movement
-        if (this.badguy.y > this.badguy.maxY ||
-            this.badguy.y < this.badguy.minY) {
-            this.badguy.speed *= -1
+        if (this.badguy1.y > this.badguy1.maxY ||
+            this.badguy1.y < this.badguy1.minY) {
+            this.badguy1.speed *= -1
         }
-        this.badguy.y += this.badguy.speed
+        this.badguy1.y += this.badguy1.speed
+
+        if (this.badguy2.y > this.badguy2.maxY ||
+            this.badguy2.y < this.badguy2.minY) {
+            this.badguy2.speed *= -1
+        }
+        this.badguy2.y += this.badguy2.speed
     }
 
 });
